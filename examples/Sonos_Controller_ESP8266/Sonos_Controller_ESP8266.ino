@@ -127,9 +127,9 @@ void setup()
   wifiManager.autoConnect();
 
   Serial.println("connected to WiFi");
-  /*if (mdns.begin("esp8266", WiFi.localIP())) {
+  if (mdns.begin("esp8266", WiFi.localIP())) {
     Serial.println("MDNS responder started");
-  }*/
+  }
 
   ArduinoOTA.onStart([]() {
     Serial.println("Start");
@@ -369,17 +369,25 @@ void handleInput(String cmd, byte b1, byte b2)
 
 void handleRoot() {
   int vol = g_sonos.getVolume(g_sonosLivingrIP);
-  String msg = "<html><head><title>ESP8266 Sonos Controller</title><script src=\"https://code.jquery.com/jquery-3.1.1.min.js\"></script><script src=\"http://joeybabcock.me/iot/hosted/hosted-sonos.js\">var intervalID = window.setInterval(getVolume, 5000);</script></head>";
-  msg += "<body>";
-  msg += "<h1>Sonos - Esp8266 Web Controller!</h1>";
-  msg += "<p><a href=\"#\" onclick=\"sendCmd('pr');\"><img src=\"http://joeybabcock.me/iot/hosted/rw.png\"/> </a> ";
-  msg += "<a href=\"#\" onclick=\"sendCmd('pl');\"><img src=\"http://joeybabcock.me/iot/hosted/play.png\"/> </a> ";
-  msg += "<a href=\"#\" onclick=\"sendCmd('pa');\"><img src=\"http://joeybabcock.me/iot/hosted/pause.png\"/></a>";
-  msg += "<a href=\"#\" onclick=\"sendCmd('nx');\"><img src=\"http://joeybabcock.me/iot/hosted/ff.png\"/></a></p>";
-  msg += "<h3>Volume: <span id=\"vol\">"+String(vol)+"</span><input type=\"hidden\" id='volume' value='"+String(vol)+"' onchange=\"setVolume(this.value)\"/></h3><br/>";
-  msg += "<input type=\"range\"  min=\"0\" max=\"99\" value=\""+String(vol)+"\" name=\"volume-slider\" id=\"volume-slider\" onchange=\"setVolume(this.value)\" />";
-  msg += "<p>Response:<div id=\"response\" style=\"width:100%;height:25%;overflow-y:scroll;\"></div></p></body>";
-  msg += "</html>";
+  String msg = "<html>\n";
+  msg += "<head>\n";
+  msg += "<title>ESP8266 Sonos Controller</title>\n";
+  msg += "<link rel=\"stylesheet\" type=\"text/css\" href=\"http://joeybabcock.me/iot/hosted/hosted-sonos.css\">";
+  msg += "<script src=\"https://code.jquery.com/jquery-3.1.1.min.js\"></script>\n";
+  msg += "<script src=\"http://joeybabcock.me/iot/hosted/hosted-sonos.js\"></script>\n";
+  msg += "</head>\n";
+  msg += "<body>\n";
+  msg += "<h1>Sonos - Esp8266 Web Controller!</h1>\n";
+  msg += "<p><a href=\"#\" onclick=\"sendCmd('pr');\"><img src=\"http://joeybabcock.me/iot/hosted/rw.png\"/> </a> \n";
+  msg += "<a href=\"#\" onclick=\"sendCmd('pl');\"><img src=\"http://joeybabcock.me/iot/hosted/play.png\"/> </a> \n";
+  msg += "<a href=\"#\" onclick=\"sendCmd('pa');\"><img src=\"http://joeybabcock.me/iot/hosted/pause.png\"/> </a> \n";
+  msg += "<a href=\"#\" onclick=\"sendCmd('nx');\"><img src=\"http://joeybabcock.me/iot/hosted/ff.png\"/> </a> </p>\n";
+  msg += "<h3>Volume: <span id=\"vol\">"+String(vol)+"</span><input type=\"hidden\" id='volume' value='"+String(vol)+"' onchange=\"setVolume(this.value)\"/></h3><br/>\n";
+  msg += "<input type=\"range\" class=\"slider\"  min=\"0\" max=\"99\" value=\""+String(vol)+"\" name=\"volume-slider\" id=\"volume-slider\" onchange=\"setVolume(this.value)\" />\n";
+  msg += "<p>Response:<div id=\"response\" class\"response\"></div></p>\n";
+  msg += "<script>var intervalID = window.setInterval(getVolume, 5000);</script>";
+  msg == "</body>\n";
+  msg += "</html>\n";
   server.send(200, "text/html", msg);
 }
 

@@ -207,11 +207,49 @@ bool isCommand(const char *command, byte b1, byte b2)
 
 String handleGet(String cmd)
 {
-  Serial.println("Handling command " + cmd);
+    Serial.println("Handling command " + cmd);
     if (cmd == "gv")
     {
       int volume = g_sonos.getVolume(g_sonosLivingrIP);
       return String(volume);
+    }
+    else if (cmd == "gs")
+    {
+      String response = "";
+      char uri[25] = "";
+      TrackInfo track = g_sonos.getTrackInfo(g_sonosLivingrIP, uri, sizeof(uri));
+      byte source = g_sonos.getSourceFromURI(track.uri);
+      switch (source)
+      {
+        case SONOS_SOURCE_FILE:
+          response += "File: ";
+          break;
+        case SONOS_SOURCE_HTTP:
+          response += "HTTP: ";
+          break;
+        case SONOS_SOURCE_RADIO:
+          response += "Radio: ";
+          break;
+        case SONOS_SOURCE_LINEIN:
+          response += "Line-In: ";
+          break;
+        case SONOS_SOURCE_MASTER:
+          response += "Other Speaker: ";
+          break;
+        default:
+          response += "Unknown";
+          break;
+      }
+      if (source == SONOS_SOURCE_FILE || source == SONOS_SOURCE_HTTP)
+      {
+        response += ", track = ";
+        response += track.number, DEC;
+        response += ", pos = ";
+        response += track.position, DEC;
+        response += " of ";
+        response += track.duration, DEC;
+      }
+      return response;
     }
     else
     {
@@ -377,15 +415,17 @@ void handleRoot() {
   msg += "<script src=\"http://joeybabcock.me/iot/hosted/hosted-sonos.js\"></script>\n";
   msg += "</head>\n";
   msg += "<body>\n";
+  msg += "<div id=\"container\">\n";
   msg += "<h1>Sonos - Esp8266 Web Controller!</h1>\n";
-  msg += "<p><a href=\"#\" onclick=\"sendCmd('pr');\"><img src=\"http://joeybabcock.me/iot/hosted/rw.png\"/> </a> \n";
-  msg += "<a href=\"#\" onclick=\"sendCmd('pl');\"><img src=\"http://joeybabcock.me/iot/hosted/play.png\"/> </a> \n";
-  msg += "<a href=\"#\" onclick=\"sendCmd('pa');\"><img src=\"http://joeybabcock.me/iot/hosted/pause.png\"/> </a> \n";
-  msg += "<a href=\"#\" onclick=\"sendCmd('nx');\"><img src=\"http://joeybabcock.me/iot/hosted/ff.png\"/> </a> </p>\n";
+  msg += "<p id=\"linkholder\"><a href=\"#\" onclick=\"sendCmd('pr');\"><img src=\"http://joeybabcock.me/iot/hosted/rw.png\"/></a> \n";
+  msg += "<a href=\"#\" onclick=\"sendCmd('pl');\"><img src=\"http://joeybabcock.me/iot/hosted/play.png\"/></a> \n";
+  msg += "<a href=\"#\" onclick=\"sendCmd('pa');\"><img src=\"http://joeybabcock.me/iot/hosted/pause.png\"/></a> \n";
+  msg += "<a href=\"#\" onclick=\"sendCmd('nx');\"><img src=\"http://joeybabcock.me/iot/hosted/ff.png\"/></a></p>\n";
   msg += "<h3>Volume: <span id=\"vol\">"+String(vol)+"</span><input type=\"hidden\" id='volume' value='"+String(vol)+"' onchange=\"setVolume(this.value)\"/></h3><br/>\n";
   msg += "<input type=\"range\" class=\"slider\"  min=\"0\" max=\"99\" value=\""+String(vol)+"\" name=\"volume-slider\" id=\"volume-slider\" onchange=\"setVolume(this.value)\" />\n";
-  msg += "<p>Response:<div id=\"response\" class=\"response\"></div></p>\n";
-  msg += "<script>var intervalID = window.setInterval(getVolume, 5000);</script>";
+  msg += "<p>Server Response:<div id=\"response\" class=\"response\"></div></p>\n";
+  msg += "<script>var intervalID = window.setInterval(getVolume, 3000);var intervalID = window.setInterval(getTrack, 10000);</script>";
+  msg += "</div>\n";
   msg == "</body>\n";
   msg += "</html>\n";
   server.send(200, "text/html", msg);

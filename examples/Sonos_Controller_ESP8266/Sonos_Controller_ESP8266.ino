@@ -372,8 +372,10 @@ void handleRoot() {
   String msg = "<html><head><title>ESP8266 Sonos Controller</title><script src=\"https://code.jquery.com/jquery-3.1.1.min.js\"></script><script src=\"http://joeybabcock.me/iot/hosted/hosted-sonos.js\">var intervalID = window.setInterval(getVolume, 5000);</script></head>";
   msg += "<body>";
   msg += "<h1>Sonos - Esp8266 Web Controller!</h1>";
-  msg += "<p><a href=\"#\" onclick=\"sendCmd('pl');\"><img src=\"http://joeybabcock.me/iot/hosted/play.png\"/> </a> ";
-  msg += "<a href=\"#\" onclick=\"sendCmd('pa');\"><img src=\"http://joeybabcock.me/iot/hosted/pause.png\"/></a></p>";
+  msg += "<p><a href=\"#\" onclick=\"sendCmd('pr');\"><img src=\"http://joeybabcock.me/iot/hosted/rw.png\"/> </a> ";
+  msg += "<a href=\"#\" onclick=\"sendCmd('pl');\"><img src=\"http://joeybabcock.me/iot/hosted/play.png\"/> </a> ";
+  msg += "<a href=\"#\" onclick=\"sendCmd('pa');\"><img src=\"http://joeybabcock.me/iot/hosted/pause.png\"/></a>";
+  msg += "<a href=\"#\" onclick=\"sendCmd('nx');\"><img src=\"http://joeybabcock.me/iot/hosted/ff.png\"/></a></p>";
   msg += "<h3>Volume: <span id=\"vol\">"+String(vol)+"</span><input type=\"hidden\" id='volume' value='"+String(vol)+"' onchange=\"setVolume(this.value)\"/></h3><br/>";
   msg += "<input type=\"range\"  min=\"0\" max=\"99\" value=\""+String(vol)+"\" name=\"volume-slider\" id=\"volume-slider\" onchange=\"setVolume(this.value)\" />";
   msg += "<p>Response:<div id=\"response\" style=\"width:100%;height:25%;overflow-y:scroll;\"></div></p></body>";

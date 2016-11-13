@@ -384,7 +384,7 @@ void handleRoot() {
   msg += "<a href=\"#\" onclick=\"sendCmd('nx');\"><img src=\"http://joeybabcock.me/iot/hosted/ff.png\"/> </a> </p>\n";
   msg += "<h3>Volume: <span id=\"vol\">"+String(vol)+"</span><input type=\"hidden\" id='volume' value='"+String(vol)+"' onchange=\"setVolume(this.value)\"/></h3><br/>\n";
   msg += "<input type=\"range\" class=\"slider\"  min=\"0\" max=\"99\" value=\""+String(vol)+"\" name=\"volume-slider\" id=\"volume-slider\" onchange=\"setVolume(this.value)\" />\n";
-  msg += "<p>Response:<div id=\"response\" class\"response\"></div></p>\n";
+  msg += "<p>Response:<div id=\"response\" class=\"response\"></div></p>\n";
   msg += "<script>var intervalID = window.setInterval(getVolume, 5000);</script>";
   msg == "</body>\n";
   msg += "</html>\n";

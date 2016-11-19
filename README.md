@@ -2,7 +2,7 @@ I edited Antonmeyer's fork to make a better example sketch, it's still in the wo
 
 This fork should be the port for esp8266
 
-This library requires the [microXPath](https://github.com/tmittet/microxpath) Library
+This library requires the [microXPath](https://github.com/tmittet/microxpath) Library, as well as the WifiManager(Search for it in the library manager) library
 
 See (http://www.joeybabcock.me/blog/projects/arduino-esp8266-based-sonos-browser-controller/) for more details.
 # sonos

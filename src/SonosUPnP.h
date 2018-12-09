@@ -28,7 +28,13 @@
 #ifndef SONOS_WRITE_ONLY_MODE
 #include "MicroXPath_P.h"
 #endif
+#if defined(__AVR__)
+#include <WiFi.h>
+#elif defined(ESP8266)
 #include <ESP8266WiFi.h>
+#else
+#include <WiFi.h>
+#endif
 
 // HTTP:
 #define HTTP_VERSION " HTTP/1.1\n"

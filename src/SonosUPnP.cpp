@@ -726,7 +726,8 @@ PGM_P SonosUPnP::getUpnpEndpoint(uint8_t upnpMessageType)
 
 void SonosUPnP::ethClient_write(const char *data)
 {
-  Serial.println("*SONOS: "+data);
+  Serial.print("*SONOS: ");
+  Serial.println(data);
   ethClient.print(data);
 }
 
@@ -743,7 +744,8 @@ void SonosUPnP::ethClient_write_P(PGM_P data_P, char *buffer, size_t bufferSize)
    //memcpy_P(buffer, data_P + dataPos, bufferSize); 
    strncpy_P(buffer, data_P + dataPos, bufferSize);
     //strlcpy_P(buffer, data_P + dataPos, bufferSize);
-    Serial.println("*SONOS: "+buffer);
+    Serial.print("*SONOS: ");
+	Serial.println(buffer);
     ethClient.print(buffer);
     dataPos += bufferSize - 1;
   }

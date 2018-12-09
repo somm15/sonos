@@ -521,6 +521,8 @@ uint8_t SonosUPnP::getVolume(IPAddress speakerIP, const char *channel)
   upnpGetString(
     speakerIP, UPNP_RENDERING_CONTROL, p_GetVolumeA,
     SONOS_TAG_CHANNEL, channel, path, 4, result, sizeof(result));
+	Serial.print("Result:");
+	Serial.println(result);
   return constrain(atoi(result), 0, 100);
 }
 
@@ -744,8 +746,8 @@ void SonosUPnP::ethClient_write_P(PGM_P data_P, char *buffer, size_t bufferSize)
    //memcpy_P(buffer, data_P + dataPos, bufferSize); 
    strncpy_P(buffer, data_P + dataPos, bufferSize);
     //strlcpy_P(buffer, data_P + dataPos, bufferSize);
-    Serial.print("*SONOS: ");
-	Serial.println(buffer);
+    //Serial.print("*SONOS: ");
+	//Serial.println(buffer);
     ethClient.print(buffer);
     dataPos += bufferSize - 1;
   }

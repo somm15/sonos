@@ -18,13 +18,13 @@ WiFiClient client;
 SonosUPnP g_sonos = SonosUPnP(client, ethConnectError);
 
 // Living room
-IPAddress g_KitchenIP(192, 168, 1, 2);
-const char g_KitchenID[] = "5CAAFDF7D276C";
+IPAddress g_KitchenIP(192, 168, 1, 206);
+const char g_KitchenID[] = "5CAAFD406A906";
 
 const char* ssid     = "wifi";
 const char* password = "password";
 
-bool isPlaying = false;
+bool isPlaying = true; //Assume we're playing so always pause first.
 
 char uri[100] = "";
 String lastCmd;
@@ -47,8 +47,8 @@ void setup()
   M5.Lcd.fillScreen(BLACK);
   M5.Lcd.setCursor(10, 10);
   M5.Lcd.setTextColor(WHITE);
-  M5.Lcd.setTextSize(4);
-  M5.Lcd.printf("Init...");
+  M5.Lcd.setTextSize(3);
+  M5.Lcd.printf("Connecting...");
   WiFi.begin(ssid, password);
 
     while (WiFi.status() != WL_CONNECTED) {
@@ -73,6 +73,13 @@ void setup()
   Serial.println(HTTPPORT);
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
+  M5.Lcd.fillScreen(BLACK);
+  M5.Lcd.setCursor(10, 10);
+  M5.Lcd.setTextColor(WHITE);
+  M5.Lcd.setTextSize(4);
+  M5.Lcd.printf("Playing");
+  M5.Lcd.fillRect(145,200,6,30,M5.Lcd.color565(255, 255, 255));
+  M5.Lcd.fillRect(165,200,6,30,M5.Lcd.color565(255, 255, 255));
 }
 
 void ethConnectError()
@@ -92,11 +99,24 @@ void loop()
     {
       g_sonos.pause(g_KitchenIP);
       isPlaying = false;
+      M5.Lcd.fillScreen(BLACK);
+      M5.Lcd.setCursor(10, 10);
+      M5.Lcd.setTextColor(WHITE);
+      M5.Lcd.setTextSize(4);
+      M5.Lcd.printf("Paused");
+      M5.Lcd.fillTriangle(185,210,150,190,150,230,M5.Lcd.color565(255, 255, 255));
     }
     else
     {
       g_sonos.play(g_KitchenIP);
       isPlaying = true;
+      M5.Lcd.fillScreen(BLACK);
+      M5.Lcd.setCursor(10, 10);
+      M5.Lcd.setTextColor(WHITE);
+      M5.Lcd.setTextSize(4);
+      M5.Lcd.printf("Playing");
+      M5.Lcd.fillRect(145,200,6,30,M5.Lcd.color565(255, 255, 255));
+      M5.Lcd.fillRect(165,200,6,30,M5.Lcd.color565(255, 255, 255));
     }
   } else if (M5.BtnC.wasReleased()) {
     g_sonos.skip(g_KitchenIP, SONOS_DIRECTION_FORWARD);

@@ -177,6 +177,13 @@ void SonosUPnP::playHttp(IPAddress speakerIP, const char *address)
   play(speakerIP);
 }
 
+void SonosUPnP::playHttps(IPAddress speakerIP, const char *address)
+{
+  setAVTransportURI(speakerIP, SONOS_SOURCE_HTTPS_SCHEME, address);
+  play(speakerIP);
+}
+
+
 void SonosUPnP::playRadio(IPAddress speakerIP, const char *address, const char *title)
 {
   setAVTransportURI(speakerIP, SONOS_SOURCE_RADIO_SCHEME, address, p_RadioMetaFullStart, p_RadioMetaFullEnd, title);

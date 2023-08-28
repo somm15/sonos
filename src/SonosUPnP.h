@@ -170,6 +170,7 @@
 #define SONOS_SOURCE_MASTER 5
 #define SONOS_SOURCE_FILE_SCHEME "x-file-cifs:"
 #define SONOS_SOURCE_HTTP_SCHEME "x-sonos-http:"
+#define SONOS_SOURCE_HTTPS_SCHEME "https:"
 #define SONOS_SOURCE_RADIO_SCHEME "x-rincon-mp3radio:"
 #define SONOS_SOURCE_RADIO_AAC_SCHEME "aac:"
 #define SONOS_SOURCE_LINEIN_SCHEME "x-rincon-stream:"
